@@ -126,6 +126,7 @@ public class SWTAccessor {
     private static final String str_gdk_window_set_background_pattern = "gdk_window_set_background_pattern";
 
     private static final int SWT_VERSION_4_20 = 4944;
+    private static final int SWT_VERSION_4_25 = 4954;
 
     private static final VersionNumber GTK_VERSION_2_14_0 = new VersionNumber(2, 14, 0);
     private static final VersionNumber GTK_VERSION_2_24_0 = new VersionNumber(2, 24, 0);
@@ -285,10 +286,12 @@ public class SWTAccessor {
                     m8 = cGTK.getDeclaredMethod(str_gdk_x11_drawable_get_xid, handleType);
                 }
 
-                if (_gtk_version.compareTo(GTK_VERSION_2_90_0) >= 0) {
-                    mb = cGDK.getDeclaredMethod(str_gdk_window_set_background_pattern, handleType, handleType);
-                } else {
-                    ma = cGTK.getDeclaredMethod(str_gdk_window_set_back_pixmap, handleType, handleType, boolean.class);
+                if (SWT.getVersion() < SWT_VERSION_4_25) {
+                    if (_gtk_version.compareTo(GTK_VERSION_2_90_0) >= 0) {
+                        mb = cGDK.getDeclaredMethod(str_gdk_window_set_background_pattern, handleType, handleType);
+                    } else {
+                        ma = cGTK.getDeclaredMethod(str_gdk_window_set_back_pixmap, handleType, handleType, boolean.class);
+                    }
                 }
             } catch (final Exception ex) { throw new NativeWindowException(ex); }
             // optional
